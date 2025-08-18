@@ -4,7 +4,7 @@
 # These data blocks find the VPC and public subnet by their IDs,
 # making the configuration reusable across different environments.
 data "aws_subnet" "public" {
-  id = "subnet-04511d61169d5a8a4"
+  id = "subnet-061b9b92847668e62"
 }
 
 data "aws_vpc" "selected" {
@@ -17,7 +17,6 @@ data "aws_vpc" "selected" {
 data "aws_ami" "amazon_linux_2023" {
   most_recent = true
   owners      = ["amazon"]
-
   filter {
     name   = "name"
     values = ["al2023-ami-2023*"]
@@ -61,6 +60,6 @@ resource "aws_instance" "public" {
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
 
   tags = {
-    Name = "wilson-ec2-${count.index}" # ⬅️ Use count.index to create unique names
+    Name = "${var.name}-ec2-${count.index}" # ⬅️ Use count.index to create unique names
   }
 }
