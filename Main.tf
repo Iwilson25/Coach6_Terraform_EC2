@@ -31,7 +31,7 @@ data "aws_ami" "amazon_linux_2023" {
 # --------------------------------------------------------------------------------------------------
 # Create a security group in the selected VPC
 resource "aws_security_group" "allow_ssh" {
-  name        = "wilson-tf-sg" # ⬅️ CHANGE TO YOUR SECURITY GROUP NAME
+  name        = "wilson-tf-sg" # CHANGE TO YOUR SECURITY GROUP NAME
   description = "Allow SSH inbound traffic"
   vpc_id      = data.aws_vpc.selected.id # Use the dynamically found VPC ID.
 }
@@ -50,16 +50,16 @@ resource "aws_security_group_rule" "allow_ssh_inbound" {
 # --------------------------------------------------------------------------------------------------
 ## Create the EC2 instance
 resource "aws_instance" "public" {
-  count = 2 # ⬅️ This is the key change!
+  count = 2 # This is the key change!
 
   ami                         = data.aws_ami.amazon_linux_2023.id
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.public.id
   associate_public_ip_address = true
-  key_name                    = "wilson_key" # ⬅️ CHANGE TO YOUR KEY PAIR NAME
+  key_name                    = "wilson_key" # CHANGE TO YOUR KEY PAIR NAME
   vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
 
   tags = {
-    Name = "${var.name}-ec2-${count.index}" # ⬅️ Use count.index to create unique names
+    Name = "${var.name}-ec2-${count.index}" # Use count.index to create unique names
   }
 }
